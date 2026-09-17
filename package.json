@@ -1,0 +1,19 @@
+{
+  "name": "pdf-compressor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local React UI + Express API that compresses PDFs with Ghostscript",
+  "scripts": {
+    "setup": "npm --prefix server install && npm --prefix client install",
+    "dev": "concurrently -n api,web -c blue,magenta \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "dev:api": "npm --prefix server run dev",
+    "dev:web": "npm --prefix client run dev",
+    "dev:lan": "concurrently -n api,web -c blue,magenta \"npm --prefix server run dev\" \"npm --prefix client run dev:host\"",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server start",
+    "clean": "rm -rf server/uploads/* server/output/* client/dist"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+npm-debug.log*
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# runtime artifacts
+server/uploads/*
+server/output/*
+!server/uploads/.gitkeep
+!server/output/.gitkeep
