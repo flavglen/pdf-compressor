@@ -23,6 +23,16 @@ pdf-compressor/
     └── package.json
 ```
 
+## Demo
+
+<img src="https://i.ibb.co/fYXV172f/Screenshot-2026-09-17-at-9-24-39-AM.png"
+     alt="PDF Compressor UI: a PDF is dropped in, the selected quality preset is highlighted in the preset grid, and the exact gs command is previewed before compressing"
+     width="1000">
+
+Drag a PDF in, pick a preset (the selected one is highlighted with a ✓), see the exact
+`gs` command that will run, then compress and download the result with the before/after
+sizes and savings.
+
 ## Requirements
 
 - Node.js 18+ (tested on v22)

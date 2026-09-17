@@ -31,9 +31,12 @@ body,
 }
 
 .app {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 28px 20px 48px;
+  /* Fluid width: fills the viewport instead of stopping at a fixed max-width.
+     Padding scales with the viewport (clamped) so the edges never look cramped
+     on large displays or squeezed on small ones. Add `max-width` + `margin: 0 auto`
+     here if you ever want to re-introduce a readable cap. */
+  width: 100%;
+  padding: clamp(20px, 2.2vw, 40px) clamp(16px, 1.6vw, 40px) clamp(32px, 3.8vw, 64px);
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -156,8 +159,9 @@ body,
 
 .layout {
   display: grid;
+  /* fr tracks: the two columns share whatever width the viewport provides. */
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  gap: 18px;
+  gap: clamp(14px, 1.4vw, 24px);
   align-items: start;
 }
 
@@ -170,7 +174,7 @@ body,
 .column {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: clamp(14px, 1.4vw, 24px);
   min-width: 0;
 }
 
@@ -178,7 +182,7 @@ body,
   background: linear-gradient(180deg, var(--card), var(--card-2));
   border: 1px solid var(--border);
   border-radius: 18px;
-  padding: 18px;
+  padding: clamp(16px, 1.4vw, 24px);
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -368,6 +372,9 @@ body,
   height: 100%;
   width: 0;
   border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), #9a6dff);
+  transition: width 0.2s ease;
+}
 
 /* -------------------------------------------------------------- presets */
 
@@ -389,7 +396,9 @@ body,
   font-family: inherit;
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+  min-width: 0;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease,
+    transform 0.12s ease;
 }
 
 .preset:hover {
@@ -397,10 +406,37 @@ body,
   border-color: var(--accent);
 }
 
-.preset--selected {
+.preset:focus-visible {
+  outline: 2px solid rgba(109, 140, 255, 0.75);
+  outline-offset: 2px;
+}
+
+/* Selected preset: accent border, tinted fill, glow and a ✓ before the label.
+   Placed after the hover rule so hovering never cancels the highlight. */
+.preset--selected,
+.preset--selected:hover {
   border-color: var(--accent);
-  background: rgba(109, 140, 255, 0.13);
-  box-shadow: inset 0 0 0 1px rgba(109, 140, 255, 0.35);
+  background: rgba(109, 140, 255, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(109, 140, 255, 0.55), 0 12px 26px rgba(79, 110, 232, 0.3);
+}
+
+.preset--selected .preset-head strong {
+  color: #fff;
+}
+
+.preset--selected .preset-head strong::before {
+  content: '✓ ';
+  color: var(--good);
+  font-weight: 700;
+}
+
+.preset--selected .preset-hint {
+  color: #c3cdf0;
+}
+
+.preset--selected .preset-dpi {
+  color: var(--good);
+  font-weight: 600;
 }
 
 .preset-head {
@@ -408,6 +444,15 @@ body,
   align-items: baseline;
   justify-content: space-between;
   gap: 6px;
+  /* Fluid-safe: the label and the flag may wrap to two lines instead of
+     forcing the card (and the page) wider than the viewport. */
+  flex-wrap: wrap;
+}
+
+.preset-head strong,
+.preset-head em {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .preset-head strong {
@@ -631,10 +676,6 @@ code {
   padding: 1px 6px;
   border-radius: 6px;
   color: #cfe3ff;
-}
-
-  background: linear-gradient(90deg, var(--accent), #9a6dff);
-  transition: width 0.2s ease;
 }
 
 .progress-bar--indeterminate {
